@@ -7,6 +7,7 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
+import Dropdownpopper from "@/Components/Dropdownpopper.vue";
 
 const form = useForm({
     name: '',
@@ -15,10 +16,17 @@ const form = useForm({
     password_confirmation: '',
 });
 
+let selectedRole = null; // Add a new data property to store the selected role
+
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
+        role: selectedRole, // Include the selected role in the form data
     });
+};
+
+const roleSelected = (role) => {
+    selectedRole = role; // Update the selectedRole property when the role is selected
 };
 </script>
 
@@ -87,7 +95,9 @@ const submit = () => {
 
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
-
+            <div class="mt-4 bg-gray-800">
+                <Dropdownpopper @role-selected="roleSelected" /> <!-- Add the event handler for role selection -->
+            </div>
             <div class="flex items-center justify-end mt-4">
                 <Link
                     :href="route('login')"
@@ -100,16 +110,10 @@ const submit = () => {
                     Register
                 </PrimaryButton>
             </div>
-            <div class="mt-4 bg-gray-800">
-                <Dropdown align="right" width="48">
-                    <template #content>
-                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                        <DropdownLink :href="route('logout')" method="post" as="button">
-                            Log Out
-                        </DropdownLink>
-                    </template>
-                </Dropdown>
-            </div>
+
+
+
+            <!-- Existing form buttons -->
         </form>
     </GuestLayout>
 </template>

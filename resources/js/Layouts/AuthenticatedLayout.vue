@@ -13,7 +13,7 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div class="flex flex-column">
         <div class="min-h-screen bg-gray-100 flex w-full ">
-            <nav class="fixed h-screen h-full bg-white border-b border-gray-100 transition transform" :class="{ 'w-1/5': showingNavigationDropdown, 'w-20': !showingNavigationDropdown }">
+            <nav class="border-r-2 border-gray-300 fixed h-screen h-full bg-white border-b border-gray-100 transition transform" :class="{ 'w-1/5': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 X ">
                     <div class="flex justify-between h-16 flex flex-row">
@@ -31,10 +31,10 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <!-- Hamburger -->
-                        <div class=" flex items-center block justify-center">
+                        <div class=" flex items-center block justify-center m-l-40">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                class="inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                             >
                                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path
@@ -60,6 +60,7 @@ const showingNavigationDropdown = ref(false);
                                 </svg>
                             </button>
                         </div>
+
                     </div>
                 </div>
 
@@ -68,7 +69,7 @@ const showingNavigationDropdown = ref(false);
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="block"
                 >
-                    <div class="pt-2 pb-3 space-y-1 sm:-my-px my-px sm:ml-10  ml-10 ">
+                    <div class="pt-2 pb-3 space-y-1 sm:-my-px my-px sm:ml-1 ml-1 transition ">
 
                         <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
                             Home
@@ -102,7 +103,36 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Heading -->
             <div class="block right flex-1" >
-            <header class="bg-white shadow flex flex-column-reverse w-full flex-1" v-if="$slots.header">
+            <header class="bg-white border-b-2 border-gray-300 flex flex-column-reverse w-full flex-1" v-if="$slots.header">
+                <div class="ml-6 mb-3 flex items-center block justify-center">
+                    <button
+                        @click="showingNavigationDropdown = !showingNavigationDropdown"
+                        class="inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                    >
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path
+                                :class="{
+                                            hidden: showingNavigationDropdown,
+
+                                        }"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            />
+                            <path
+                                :class="{
+                                            hidden: !showingNavigationDropdown,
+                                            'inline-flex': showingNavigationDropdown,
+                                        }"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                </div>
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 items-center">
                     <slot name="header" class="flex items-center"/>
 
@@ -118,6 +148,7 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main class="h-full flex-1 justify-end items" >
+
                 <div >
                 <slot />
 

@@ -26,17 +26,11 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/shops', function () {
-    return Inertia::render('Shops');
-})->middleware(['auth', 'verified'])->name('shops');
-
-Route::get('/home', function () {
-    return Inertia::render('Home');
-})->middleware(['auth', 'verified'])->name('home');
+Route::middleware(['auth', 'verified'])->group(function (){
+    Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
+    Route::get('/shops', function () {return Inertia::render('Shops');})->name('shops');
+    Route::get('/home', function () {return Inertia::render('Home');})->name('home');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
