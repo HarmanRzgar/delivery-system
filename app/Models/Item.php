@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\ItemFactory;
 
-class item extends Model
+
+class Item extends Model
 {
     use HasFactory;
 
@@ -14,4 +16,14 @@ class item extends Model
         'discountPercentage',
         'price',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Database\Factories\ItemFactory
+     */
+    protected static function newFactory()
+    {
+        return ItemFactory::new();
+    }
 }

@@ -5,6 +5,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import Dropdown from "@/Components/Dropdown.vue";
+import DropdownLink from "@/Components/DropdownLink.vue";
 
 const form = useForm({
     name: '',
@@ -97,6 +99,16 @@ const submit = () => {
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Register
                 </PrimaryButton>
+            </div>
+            <div class="mt-4 bg-gray-800">
+                <Dropdown align="right" width="48">
+                    <template #content>
+                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                        <DropdownLink :href="route('logout')" method="post" as="button">
+                            Log Out
+                        </DropdownLink>
+                    </template>
+                </Dropdown>
             </div>
         </form>
     </GuestLayout>

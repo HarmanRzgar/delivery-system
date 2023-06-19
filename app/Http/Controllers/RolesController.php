@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
+use App\Models\roles;
 use Illuminate\Http\Request;
 
-class ItemsController extends Controller
+class RolesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = Item::all();
-        return response()->json($data);
+        //
     }
 
     /**
@@ -35,7 +34,7 @@ class ItemsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $items)
+    public function show(roles $roles)
     {
         //
     }
@@ -43,7 +42,7 @@ class ItemsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Item $items)
+    public function edit(roles $roles)
     {
         //
     }
@@ -51,7 +50,7 @@ class ItemsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Item $items)
+    public function update(Request $request, roles $roles)
     {
         //
     }
@@ -59,7 +58,7 @@ class ItemsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Item $items)
+    public function destroy(roles $roles)
     {
         //
     }
