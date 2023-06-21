@@ -28,7 +28,8 @@ class OrderListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $orderList = new OrderList();
+
     }
 
     /**

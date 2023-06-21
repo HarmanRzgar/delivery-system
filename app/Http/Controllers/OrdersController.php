@@ -28,7 +28,20 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user_id = $request->user_id;
+
+        // Check if the user id exists in the orders table
+      // $order = Orders::where('customer_id', $user_id)->first();
+
+       // if ($order) {
+            // The user id already exists in the orders table, so we need to call the store method in the orderlist controller
+         //   (new OrderListController)->store($request->all());
+       // } else {
+            // The user id does not exist in the orders table, so we need to create a new order
+            $order = new Orders();
+            $order->customer_id = $user_id;
+            $order->save();
+       // }
     }
 
     /**

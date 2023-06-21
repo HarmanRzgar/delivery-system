@@ -1,6 +1,10 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import CardFront from "@/Components/CardFront.vue";
+
+const users = this.$axios.get('/api/users?store=true');
+
 </script>
 
 <template>
@@ -21,6 +25,6 @@ import { Head } from '@inertiajs/vue3';
 
             <img src="" alt="" srcset="">
             <h2>shopname</h2>
-
+        <CardFront :users="">
     </AuthenticatedLayout>
 </template>

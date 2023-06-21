@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('shopName')->nullable();
+            $table->integer('store')->nullable();
             $table->integer('role_id');
 
 

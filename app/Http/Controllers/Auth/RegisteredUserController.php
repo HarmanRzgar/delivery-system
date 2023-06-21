@@ -18,6 +18,19 @@ use App\Models\Roles;
 
 class RegisteredUserController extends Controller
 {
+    public function index()
+    {
+        $data = User::all();
+        return response()->json($data);
+    }
+
+    public function indexall()
+    {
+        $data = Auth::User();
+        return response()->json($data);
+    }
+
+
     /**
      * Display the registration view.
      */
@@ -46,6 +59,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
+
         ]);
 
 

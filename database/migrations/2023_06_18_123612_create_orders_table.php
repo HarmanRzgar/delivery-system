@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('customer_id');
-
             $table->integer('order_list_id');
             $table->decimal('item_sum');
             $table->decimal('fee_sum');
             $table->decimal('total_sum');
+            $table->integer('phase');
             $table->timestamps();
         });
     }

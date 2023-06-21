@@ -4,13 +4,17 @@ import { Head } from '@inertiajs/vue3';
 import Card from "@/Components/Card.vue";
 import TextBox from "@/Components/TextBox.vue";
 import BarChart from "@/Components/BarChart.vue";
+import axios from 'axios';
 
 
 export default {
+
     components: {AuthenticatedLayout, Card},
     data() {
         return {
             items: [],
+            user_id: [],
+            item_price: '',
         }},
     mounted() {
         this.fetchData();
@@ -24,7 +28,22 @@ export default {
                 .catch(error => {
                     console.error(error);
                 });
-        }
+        },
+        UserData() {
+            axios.get('/user')
+                .then(response => {
+                    this.user_id = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        onCreateOrder() {
+            this.$inertia.post('/orders', {
+                user_id: this.user_id,
+                item_price: this.item_price,
+            });
+        },
     }
     ,}
 </script>
@@ -42,7 +61,7 @@ export default {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">See the shops fam!</div>
 
-                                    </div><card :items="items"/>
+                                    </div><card :items="items" @click="onCreateOrder"/>
             </div>
         </div>
     </AuthenticatedLayout>
