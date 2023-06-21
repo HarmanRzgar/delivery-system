@@ -20,13 +20,19 @@ class RegisteredUserController extends Controller
 {
     public function index()
     {
+        $data = Auth::User();
+        return response()->json($data);
+    }
+
+    public function indexAll()
+    {
         $data = User::all();
         return response()->json($data);
     }
 
-    public function indexall()
+    public function shopsAll()
     {
-        $data = Auth::User();
+        $data = User::where('role_id', 4)->get();
         return response()->json($data);
     }
 
@@ -59,7 +65,6 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
-
         ]);
 
 

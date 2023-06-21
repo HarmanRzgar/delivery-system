@@ -1,12 +1,41 @@
-<script setup>
+<script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import CardFront from "@/Components/CardFront.vue";
+import Card from "@/Components/Card.vue";
+import axios from "axios";
 
-const users = this.$axios.get('/api/users?store=true');
+
+export default {
+
+    components: {AuthenticatedLayout, CardFront},
+    data() {
+        return {
+            shops: [],
+        }},
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        fetchData() {
+            axios.get('/shopsdata')
+                .then(response => {
+                    this.shops = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+
+    }
+    ,}
 
 </script>
 
+
+<script setup>
+
+</script>
 <template>
     <Head title="Shops" />
 
@@ -25,6 +54,6 @@ const users = this.$axios.get('/api/users?store=true');
 
             <img src="" alt="" srcset="">
             <h2>shopname</h2>
-        <CardFront :users="">
+        <CardFront :users="shops"/>
     </AuthenticatedLayout>
 </template>

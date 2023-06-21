@@ -45,7 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/items', [ItemsController::class, 'index']);
 
     Route::get('/user', [RegisteredUserController::class, 'index']);
-    Route::get('/users', [RegisteredUserController::class, 'indexall']);
+    Route::get('/users', [RegisteredUserController::class, 'indexAll']);
+    Route::get('/shopsdata', [RegisteredUserController::class, 'shopsAll']);
     Route::post('/orders', [OrdersController::class, 'store']);
 
 });
