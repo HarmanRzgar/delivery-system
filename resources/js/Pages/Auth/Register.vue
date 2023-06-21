@@ -1,3 +1,30 @@
+<script>
+import { defineComponent } from 'vue'
+export default defineComponent({
+    data() {
+        return {
+            roles: [],
+        }},
+    methods: {
+        fetchData() {
+            axios.get('/roles')
+                .then(response => {
+                    this.roles = response.data;
+                    console.log(this.roles);
+                })
+                .catch(error => {
+                    console.error(error);
+                    console.log(this.roles);
+                });
+        }
+    },
+    mounted() {
+        this.fetchData();
+    },
+})
+
+</script>
+
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -5,29 +32,37 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import Dropdown from "@/Components/Dropdown.vue";
-import DropdownLink from "@/Components/DropdownLink.vue";
+import { defineComponent } from 'vue'
+
 import Dropdownpopper from "@/Components/Dropdownpopper.vue";
+
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    role_id: '',
+
 });
+
+
 
 let selectedRole = null; // Add a new data property to store the selected role
 
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
-        role: selectedRole, // Include the selected role in the form data
+         // Include the selected role in the form data
     });
 };
 
 const roleSelected = (role) => {
     selectedRole = role; // Update the selectedRole property when the role is selected
 };
+
+
+
 </script>
 
 <template>
@@ -96,7 +131,16 @@ const roleSelected = (role) => {
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
             <div class="mt-4 bg-gray-800">
-                <Dropdownpopper @role-selected="roleSelected" /> <!-- Add the event handler for role selection -->
+
+                <label for="role"></label>
+                <select v-model="form.role_id" name="role" class="form-control">
+                    <option>Select role</option>
+                    <option v-for="role in roles" :value="role.id">@{{ role.name }}</option>
+                </select>
+
+                <InputLabel for="role" value="Role" />
+
+               <!-- Add the event handler for role selection -->
             </div>
             <div class="flex items-center justify-end mt-4">
                 <Link
@@ -112,8 +156,6 @@ const roleSelected = (role) => {
             </div>
 
 
-
-            <!-- Existing form buttons -->
         </form>
     </GuestLayout>
 </template>

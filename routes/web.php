@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RolesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/items', [ItemsController::class, 'index']);
+
+Route::get('/roles', [RolesController::class, 'index']);
 
 
 require __DIR__.'/auth.php';

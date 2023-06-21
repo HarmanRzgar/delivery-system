@@ -37,15 +37,15 @@ import { createPopper } from "@popperjs/core";
 export default {
     name: "dropdown",
     props: {
-        selectedRole: {
-            type: Number,
-            default: null,
-        },
+            roles: {
+                type: Object,
+                required: true
+            },
     },
     data() {
         return {
             dropdownPopoverShow: false,
-            roles: [], // Add a roles array to store the roles fetched from the database
+            roles: ["Customer", "Driver", "ShopOwner" ], // Add a roles array to store the roles fetched from the database
         };
     },
     methods: {
