@@ -129,15 +129,16 @@ const roleSelected = (role) => {
 
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
-            <div class="mt-4 bg-gray-800">
+            <div class="mt-4 flex flex-col">
 
-                <label for="role"></label>
-                <select v-model="form.role_id" name="role" class="form-control">
+                <label for="role">Role</label>
+                <select v-model="form.role_id" name="role" class="form-control rounded-md border-gray-300 border-2 gap-6">
                     <option>Select role</option>
                     <option v-for="role in roles" :value="role.id">@{{ role.name }}</option>
                 </select>
 
-                <InputLabel for="role" value="Role" />
+
+                <InputLabel for="role"  />
 
                <!-- Add the event handler for role selection -->
             </div>

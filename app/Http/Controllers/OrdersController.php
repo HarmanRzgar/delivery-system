@@ -38,8 +38,9 @@ class OrdersController extends Controller
          //   (new OrderListController)->store($request->all());
        // } else {
             // The user id does not exist in the orders table, so we need to create a new order
-            $order = new Orders();
+            $order = Orders::create();
             $order->customer_id = $user_id;
+            $order->item_sum = $price;
             $order->save();
        // }
     }

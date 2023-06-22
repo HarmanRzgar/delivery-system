@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->integer('store')->nullable();
             $table->integer('role_id');
+            $table->string('store_name')->nullable();
+            $table->decimal('daily_profit')->nullable();
 
 
             $table->rememberToken();

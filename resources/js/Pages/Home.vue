@@ -39,7 +39,7 @@ export default {
                 });
         },
         onCreateOrder() {
-            this.$inertia.post('/orders', {
+            this.$inertia.post('/ordered', {
                 user_id: this.user_id,
                 item_price: this.item_price,
             });

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItemRequest;
 use App\Models\Item;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ItemsController extends Controller
@@ -16,29 +18,39 @@ class ItemsController extends Controller
         return response()->json($data);
     }
 
+    public function show($id)
+    {
+        $data = Item::where('userId', $id)->get();
+        return $data;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return inertia('Items/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(ItemRequest $request)
     {
-        //
+        $item = Item::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => $request->file('image')->store('items'),
+            'user_id' => auth()->id(),
+        ]);
+
+        $item->user()->associate(User::find(auth()->id()));
+        $item->save();
+
+        return redirect()->route('items.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Item $items)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

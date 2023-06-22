@@ -5,6 +5,8 @@ use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\ShopController;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +37,15 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::get('/home', function () {return Inertia::render('Home');})->name('home');
     Route::get('/order', function () {return Inertia::render('Order');})->name('order');
     Route::get('/cart', function () {return Inertia::render('Cart');})->name('cart');
+    Route::get('/shops/{id}', function ($id) {
+        $user = User::find($id); // Assuming you have a User model
+
+        // Pass the user data to the ShopFront component
+        return Inertia::render('ShopFront', [
+            'user' => $user,
+
+        ]);
+    })->name('shopfront');
 });
 
 Route::middleware('auth')->group(function () {
@@ -42,12 +53,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/data', [ItemsController::class, 'index']);
+    Route::get('/data/{id}', [ItemsController::class, 'show']);
     Route::get('/items', [ItemsController::class, 'index']);
 
     Route::get('/user', [RegisteredUserController::class, 'index']);
     Route::get('/users', [RegisteredUserController::class, 'indexAll']);
     Route::get('/shopsdata', [RegisteredUserController::class, 'shopsAll']);
-    Route::post('/orders', [OrdersController::class, 'store']);
+    Route::post('/ordered', [OrdersController::class, 'store']);
+
 
 });
 
