@@ -1,38 +1,4 @@
-<!--<template>-->
 
-<!--</template>-->
-
-<!--<script>-->
-<!--export default {-->
-<!--    name: 'ItemsCreate',-->
-<!--    components: {-->
-<!--        'modal': () => import('./Modal.vue'),-->
-<!--    },-->
-<!--    data() {-->
-<!--        return {-->
-<!--            showModal: false,-->
-<!--            name: '',-->
-<!--            description: '',-->
-<!--            image: null,-->
-<!--            user_id: '',-->
-<!--        };-->
-<!--    },-->
-<!--    methods: {-->
-<!--        showModal() {-->
-<!--            this.showModal = true;-->
-<!--        },-->
-<!--        onImageChange(event) {-->
-<!--            this.image = event.target.files[0];-->
-<!--        },-->
-<!--    },-->
-<!--};-->
-<!--</script>-->
-<!--<div>-->
-<!--<button @click="showModal">Add Item</button>-->
-<!--<modal v-if="showModal" @close="showModal = false">-->
-
-<!--</modal>-->
-<!--</div>-->
 <template>
     <div class="container mx-auto" v-if="user.role_id === 4 ">
         <div class="flex justify-center">
@@ -77,13 +43,11 @@
                     <div class="mt-4 m-4">
 
                         <form @submit.prevent="submit" class="bg-gray-100 flex-col flex gap-6">
-                            <input type="text" v-model="name" placeholder="Name" class="rounded-md">
-                            <input type="text" v-model="name" placeholder="Price" class="rounded-md">
-                            <textarea v-model="description" placeholder="Description" class="rounded-md resize-none	"></textarea>
-                            <input type="file" @change="onImageChange" class="rounded-md" >
-                            <img v-if="url" :src="url" />
-                            <input type="hidden" v-model="user_id" class="rounded-md">
-                        </form>
+                            <input type="text" v-model="form.name" placeholder="Name" class="rounded-md">
+                            <input type="text" v-model="form.price" placeholder="Price" class="rounded-md">
+                            <textarea v-model="form.description" placeholder="Description" class="rounded-md resize-none	"></textarea>
+
+
 
                         <button
                             @click="isOpen = false"
@@ -91,9 +55,10 @@
                         >
                             Cancel
                         </button>
-                        <button class="px-6 py-2 ml-2 text-blue-50 bg-indigo-800 rounded">
-                            Save
-                        </button>
+                            <PrimaryButton @click="isOpen = false" class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                Register
+                            </PrimaryButton>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -101,7 +66,6 @@
     </div>
 </template>
 <script>
-import axios from "axios";
 
 export default {
     data() {
@@ -115,10 +79,7 @@ export default {
         this.UserData();
     },
     methods: {
-        onImageChange(e) {
-            const file = e.target.files[0];
-            this.url = URL.createObjectURL(file);
-        },
+
         UserData() {
             axios.get('/user')
                 .then(response => {
@@ -128,6 +89,26 @@ export default {
                     console.error(error);
                 });
         },
+
     }
 };
+</script>
+<script setup>
+import axios from "axios";
+import {useForm} from "@inertiajs/vue3";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+
+const submit = () => {
+    form.post(route('items.store'), {
+        onFinish: () => form.reset('name', 'price', 'description'),
+        // Include the selected role in the form data
+    },);
+};
+const form = useForm({
+    name: '',
+    price: '',
+    description: '',
+
+});
+
 </script>

@@ -1,6 +1,6 @@
 <template>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 break-all">
-        <div v-for="user in users" :key="user.id" class="flex flex-col justify-center break-all">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 break-all flex">
+        <div v-for="user in users" :key="user.id" class="flex ">
             <div class="break-words m-4 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-center break-words">
                 <a href="#">
                     <img class="p-6 rounded-lg rounded-md" :src="user.image" alt="product image" />

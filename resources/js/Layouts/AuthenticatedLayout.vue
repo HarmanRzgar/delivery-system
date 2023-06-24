@@ -8,12 +8,40 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
+
+
+</script>
+<script>
+export default {
+    data() {
+        return {
+            user: [],
+        };
+    },
+    mounted() {
+        this.UserData();
+    },
+    methods: {
+
+        UserData() {
+            axios.get('/user')
+                .then(response => {
+                    this.user = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+
+    }
+};
 </script>
 
 <template>
     <div class="flex flex-column">
         <div class="min-h-screen bg-gray-100 flex w-full ">
-            <nav class="border-r-2 border-gray-300 fixed h-screen h-full bg-white border-b border-gray-100 transition transform" :class="{ 'w-1/5': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }">
+            <nav class="border-r-2 border-gray-300 fixed h-screen h-full bg-white border-b border-gray-100 transition transform" :class="{ 'w-90': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 X ">
                     <div class="flex justify-between h-16 flex flex-row">
@@ -69,12 +97,12 @@ const showingNavigationDropdown = ref(false);
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="block"
                 >
-                    <div class="pt-2 pb-3 space-y-1 sm:-my-px my-px sm:ml-1 ml-1 transition ">
+                    <div class="pt-2 pb-3 space-y-1 sm:-my-px my-px sm:ml-1 ml-1 transition w-fit">
 
                         <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
                             Home
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')" v-if="user.role_id === 4 ">
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('shops')" :active="route().current('shops')">

@@ -6,6 +6,8 @@ use App\Http\Requests\ItemRequest;
 use App\Models\Item;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class ItemsController extends Controller
 {
@@ -34,18 +36,25 @@ class ItemsController extends Controller
 
     public function store(ItemRequest $request)
     {
-        $item = Item::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'image' => $request->file('image')->store('items'),
-            'user_id' => auth()->id(),
-        ]);
+        $validatedData = $request->validated();
 
-        $item->user()->associate(User::find(auth()->id()));
+        $item = new Item;
+        $item->name = $validatedData['name'];
+        $item->description = $validatedData['description'];
+        $item->userId = Auth::id();
+        $item->price = $validatedData['price'];
+
+
+
+
         $item->save();
 
-        return redirect()->route('items.index');
+
     }
+
+
+
+
 
     /**
      * Display the specified resource.

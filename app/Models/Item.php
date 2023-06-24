@@ -15,7 +15,10 @@ class Item extends Model
         'image',
         'discountPercentage',
         'price',
+        'image'
     ];
+
+
 
     /**
      * Create a new factory instance for the model.

@@ -18,8 +18,7 @@ export default {
         return {
             name: '',
             description: '',
-            image: null,
-            user_id: '',
+
             items: [],
             shopItems: [],
 
@@ -28,23 +27,11 @@ export default {
     mounted() {
         this.fetchData();
 
-        console.log(this.items);
+
     },
     methods: {
-        submit() {
-            const formData = useForm({
-                name: this.name,
-                description: this.description,
-                image: this.image,
-            });
 
-            formData.post('/items', {
-                'user_id': this.user_id,
-            });
-        },
-        onImageChange(event) {
-            this.image = event.target.files[0];
-        },
+
         fetchData() {
             axios.get(`/data/${this.user.id}`)
                 .then(response => {
@@ -57,6 +44,9 @@ export default {
                     console.error(error);
                 });
         },
+
+
+
     },
 }
 
@@ -71,11 +61,12 @@ export default {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto Qsm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 text-xl">{{user.name}}'s shop</div>
-                    <div class="p-6 text-gray-900">Description</div> <ItemModal></ItemModal>
-                    <card :items="items" /> </div>
+
+                    <ItemModal></ItemModal>
+                    <card :items="items"/> </div>
             </div>
 
         </div>

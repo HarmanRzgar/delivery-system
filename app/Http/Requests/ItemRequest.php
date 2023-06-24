@@ -11,10 +11,12 @@ class ItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'required|file|mimes:jpeg,png,jpg',
-            'user_id' => 'required|integer|exists:users,id',
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'nullable|image',
+            'userId' => 'nullable|exists:users,id',
+            'price' => 'required|numeric',
         ];
     }
+
 }

@@ -9,9 +9,16 @@ class Orders extends Model
 {
 
     protected $fillable = [
-      'item_sum',
+      'total_sum',
+        'phase',
       'customer_id',
     ];
+
+
+    public function phases()
+    {
+        return $this->hasMany(Phase::class);
+    }
 
     use HasFactory;
 }

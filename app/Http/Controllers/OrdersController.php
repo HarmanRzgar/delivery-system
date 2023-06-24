@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrdersRequest;
+use App\Models\Cart;
+use App\Models\OrderList;
 use App\Models\orders;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrdersController extends Controller
 {
@@ -28,22 +32,48 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = $request->user_id;
+        // Validate the request data
+        $validatedData = $request->validate([
 
-        // Check if the user id exists in the orders table
-      // $order = Orders::where('customer_id', $user_id)->first();
+        ]);
 
-       // if ($order) {
-            // The user id already exists in the orders table, so we need to call the store method in the orderlist controller
-         //   (new OrderListController)->store($request->all());
-       // } else {
-            // The user id does not exist in the orders table, so we need to create a new order
-            $order = Orders::create();
-            $order->customer_id = $user_id;
-            $order->item_sum = $price;
-            $order->save();
-       // }
+        // Retrieve cart items for the user
+        $cartItems = Cart::where('user_id', Auth::id())->get();
+
+        // Create the order
+        $order = new Orders();
+        $order->customer_id = Auth::id();
+        $order->total_sum = 0; // This will be updated in the loop
+        $order->phase = 1; // Set the initial status of the order
+
+        $order->save();
+
+
+        // Move cart items to order
+        foreach ($cartItems as $cartItem) {
+            $orderItem = new OrderList();
+            $orderItem->order_id = $order->id;
+            $orderItem->item_id = $cartItem->item_id;
+            $orderItem->quantity = $cartItem->quantity;
+            $orderItem->save();
+
+
+            // Update the order total by multiplying item price with quantity
+            $order->total_sum += ($cartItem->item->price * $cartItem->quantity);
+        }
+
+
+        // Save the updated order total
+        $order->save();
+
+        // Remove cart items
+        Cart::where('user_id', Auth::id())->delete();
+
+        // Return a response or perform additional actions
+        // ...
     }
+
+
 
     /**
      * Display the specified resource.

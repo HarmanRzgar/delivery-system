@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProfileController;
@@ -55,11 +56,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/data', [ItemsController::class, 'index']);
     Route::get('/data/{id}', [ItemsController::class, 'show']);
     Route::get('/items', [ItemsController::class, 'index']);
+    Route::post('/itemsCreate', [ItemsController::class, 'store'])->name('items.store');
 
     Route::get('/user', [RegisteredUserController::class, 'index']);
     Route::get('/users', [RegisteredUserController::class, 'indexAll']);
     Route::get('/shopsdata', [RegisteredUserController::class, 'shopsAll']);
-    Route::post('/ordered', [OrdersController::class, 'store']);
+    Route::post('/ordered', [CartController::class, 'addToCart']);
+    Route::get('/cartItems', [CartController::class, 'index']);
+    Route::post('/place-order', [OrdersController::class, 'store'])->name('place-order');
 
 
 });
