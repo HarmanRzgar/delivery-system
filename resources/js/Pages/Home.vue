@@ -5,21 +5,33 @@ import Card from "@/Components/Card.vue";
 import TextBox from "@/Components/TextBox.vue";
 import BarChart from "@/Components/BarChart.vue";
 import axios from 'axios';
+import Carousel from "@/Components/Carousel.vue";
 
 
 export default {
 
-    components: {AuthenticatedLayout, Card},
+    components: {Carousel, AuthenticatedLayout, Card},
     data() {
         return {
             items: [],
             user_id: [],
             item_price: '',
+            shops: [],
         }},
     mounted() {
         this.fetchData();
+        this.fetchShops();
     },
     methods: {
+        fetchShops() {
+            axios.get('/shopsdata')
+                .then(response => {
+                    this.shops = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
         fetchData() {
             axios.get('/data')
                 .then(response => {
@@ -60,8 +72,9 @@ export default {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">See the shops fam!</div>
-
-                                    </div><card :items="items" @click="onCreateOrder"/>
+                    <carousel :users="shops"/>
+                </div>
+                <card :items="items" @click="onCreateOrder"/>
             </div>
         </div>
     </AuthenticatedLayout>

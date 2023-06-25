@@ -16,8 +16,20 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Orders::where('customer_id', Auth::id())->get();
+        $orderLists = [];
+
+        foreach ($orders as $order) {
+            $orderList = OrderList::where('order_id', $order->id)->get();
+            $orderLists[$order->id] = $orderList;
+        }
+
+        return response()->json([
+            'orders' => $orders,
+            'orderLists' => $orderLists
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -39,38 +51,51 @@ class OrdersController extends Controller
 
         // Retrieve cart items for the user
         $cartItems = Cart::where('user_id', Auth::id())->get();
-
-        // Create the order
-        $order = new Orders();
-        $order->customer_id = Auth::id();
-        $order->total_sum = 0; // This will be updated in the loop
-        $order->phase = 1; // Set the initial status of the order
-
-        $order->save();
-
-
-        // Move cart items to order
-        foreach ($cartItems as $cartItem) {
-            $orderItem = new OrderList();
-            $orderItem->order_id = $order->id;
-            $orderItem->item_id = $cartItem->item_id;
-            $orderItem->quantity = $cartItem->quantity;
-            $orderItem->save();
+        if ($cartItems) {
+            // Create the order
+            $order = Orders::create([
+                'customer_id' => Auth::id(),
+                'total_sum' => 10.3, // This will be updated in the loop
+                'phase' => 1, // Set the initial status of the order
+            ]);
 
 
-            // Update the order total by multiplying item price with quantity
-            $order->total_sum += ($cartItem->item->price * $cartItem->quantity);
+            // Move cart items to order
+            foreach ($cartItems as $cartItem) {
+                $orderItem = OrderList::create([
+                    'order_id' => $order->id,
+                    'item_id' => $cartItem->item_id,
+                    'quantity' => $cartItem->quantity,
+                    'price' => $cartItem->price,
+                    'name' => $cartItem->name,
+                ]);
+                $orderItem->load('item');
+                $orderItem->save();
+
+
+                // Update the order total by multiplying item price with quantity
+                $order->update([
+                    'total_sum' => ($cartItem->item->price * $cartItem->quantity),
+                ]);
+
+            }
+
+            $order->load('phase');
+
+
+            // Save the updated order total
+            $order->save();
+
+            // Remove cart items
+            Cart::where('user_id', Auth::id())->delete();
+
+            // Return a response or perform additional actions
+            // ...
+
+            return response()->json(['order' => $order], 200);
+        } else {
+            return response()->json(['order' => 'Cart is empty'], 404);
         }
-
-
-        // Save the updated order total
-        $order->save();
-
-        // Remove cart items
-        Cart::where('user_id', Auth::id())->delete();
-
-        // Return a response or perform additional actions
-        // ...
     }
 
 

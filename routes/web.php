@@ -63,6 +63,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/shopsdata', [RegisteredUserController::class, 'shopsAll']);
     Route::post('/ordered', [CartController::class, 'addToCart']);
     Route::get('/cartItems', [CartController::class, 'index']);
+    Route::get('/orders', [OrdersController::class, 'index']);
+
     Route::post('/place-order', [OrdersController::class, 'store'])->name('place-order');
 
 

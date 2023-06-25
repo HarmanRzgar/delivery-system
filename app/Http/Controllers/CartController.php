@@ -41,6 +41,13 @@ class CartController extends Controller
         $cart->price = $validatedData['price'];
         $cart->quantity = $validatedData['quantity'];
         $cart->user_id = Auth::id();
+        $cart->item_total = $cart->price * $cart->quantity;
+
+
+//        $cart->update([
+//            'total_sum' =>  ($cart->item_total::all() + quantity),
+//        ]);
+//        $cart->total_sum = $cart->price * $cart->quantity;
         $cart->save();
 
         // Return a response or perform additional actions

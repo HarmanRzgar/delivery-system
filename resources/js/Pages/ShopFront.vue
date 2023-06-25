@@ -13,12 +13,13 @@ export default {
             type: Object,
             required: true,
         },
+
     },
     data() {
         return {
             name: '',
             description: '',
-
+            shopOwner: [],
             items: [],
             shopItems: [],
 
@@ -27,11 +28,19 @@ export default {
     mounted() {
         this.fetchData();
 
-
+        this.UserData();
     },
     methods: {
 
-
+        UserData() {
+            axios.get('/user')
+                .then(response => {
+                    this.shopOwner = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
         fetchData() {
             axios.get(`/data/${this.user.id}`)
                 .then(response => {
@@ -64,9 +73,11 @@ export default {
             <div class="max-w-7xl mx-auto Qsm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 text-xl">{{user.name}}'s shop</div>
-
-                    <ItemModal></ItemModal>
+<!--                        <div v-if="user.role_id === users ">-->
+                    <ItemModal :users="user"></ItemModal>
+<!--                        </div>-->
                     <card :items="items"/> </div>
+
             </div>
 
         </div>

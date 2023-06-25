@@ -8,8 +8,11 @@ class OrderList extends Model
 {
     protected $fillable = [
         'order_id',
+        'item_name',
         'item_id',
         'quantity',
+        'name',
+       'price',
         // additional attributes related to the item in the order
     ];
 

@@ -1,9 +1,5 @@
 <script setup>
 
-import { Head } from '@inertiajs/vue3';
-
-
-
 </script>
 
 
@@ -74,6 +70,8 @@ export default {
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total for item</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overall total</th>
                                     <!-- Add more table headers as needed -->
                                 </tr>
                                 </thead>
@@ -82,6 +80,7 @@ export default {
                                     <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ item.price }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.item_total }}</td>
                                     <!-- Display other item properties as needed -->
                                 </tr>
                                 </tbody>

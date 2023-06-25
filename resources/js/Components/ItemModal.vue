@@ -1,6 +1,6 @@
 
 <template>
-    <div class="container mx-auto" v-if="user.role_id === 4 ">
+    <div class="container mx-auto m-4" v-if="user.id === users.id ">
         <div class="flex justify-center">
             <button
                 @click="isOpen = true"
@@ -68,6 +68,12 @@
 <script>
 
 export default {
+    props: {
+        users: {
+         type: Object,
+          required: true,
+         },
+    },
     data() {
         return {
             isOpen: false,

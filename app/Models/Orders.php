@@ -15,9 +15,9 @@ class Orders extends Model
     ];
 
 
-    public function phases()
+    public function phase()
     {
-        return $this->hasMany(Phase::class);
+        return $this->belongsTo(Phase::class, 'phase');
     }
 
     use HasFactory;

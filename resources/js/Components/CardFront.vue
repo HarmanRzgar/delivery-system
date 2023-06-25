@@ -10,7 +10,7 @@
                         <h5 class="text-xl font-semibold tracking-tight text-gray-100 dark:text-white truncate">{{ user.id }}</h5>
                     </a>
                     <div class="flex items-center justify-between flex-col gap-6">
-                        <span class="text-lg font-bold text-gray-900 dark:text-white overflow-wrap break-word flex flex-col break-words">{{ user.email }}</span>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white overflow-wrap break-word flex flex-col break-words">{{ user.name}}'s shop</span>
                         <div class="whitespace-nowrap break-words">
 
                             <NavLink :href="`/shops/${user.id}`" >Visit shop</NavLink>

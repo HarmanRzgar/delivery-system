@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Phase extends Model
 {
     use HasFactory;
-}
+
 
 
 public function order() {
 
     return $this->belongsTo(Order::class);
+}
+
 }
