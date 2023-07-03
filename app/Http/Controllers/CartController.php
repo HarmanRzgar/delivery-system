@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Item;
 use App\Models\Orders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,8 +35,13 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Add item to the cart
+
+
+
+            // Add item to the cart
+
         $cart = new Cart();
+
         $cart->item_id = $validatedData['item_id'];
         $cart->name = $validatedData['name'];
         $cart->price = $validatedData['price'];
@@ -43,6 +49,9 @@ class CartController extends Controller
         $cart->user_id = Auth::id();
         $cart->item_total = $cart->price * $cart->quantity;
 
+        $item = Item::where('id', $cart->item_id)->first();
+
+        $cart->shop_owner_id = $item->userId;
 
 //        $cart->update([
 //            'total_sum' =>  ($cart->item_total::all() + quantity),

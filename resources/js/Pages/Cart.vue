@@ -6,6 +6,7 @@
 <script>
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+// import {useCartsStore} from "@/store/cartsStore.js";
 
 
 export default {
@@ -18,6 +19,12 @@ export default {
             cartItems: [], // Initialize with an empty array
         };
     },
+    // computed: {
+    //     carts(){
+    //         const cartsStore = useCartsStore();
+    //         return cartsStore.carts;
+    //     }
+    // },
     mounted() {
         this.fetchCartItems();
     },
@@ -47,6 +54,7 @@ export default {
                     // Handle the error
                     console.error(error.response.data);
                 });
+
         },
 
     },
@@ -62,9 +70,10 @@ export default {
             <div class="py-12 flex">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex ">
-                        <div class="p-6">
+                        <div class="p-6" >
                             <h2 class="text-xl font-semibold mb-4">Cart Items</h2>
-                            <table class="min-w-full divide-y divide-gray-200 flex flex-col">
+                            <div v-if="!cartItems.length">Cart is empty...</div>
+                            <table class="min-w-full divide-y divide-gray-200 flex flex-col" v-else>
                                 <thead class="bg-gray-100">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
@@ -80,19 +89,20 @@ export default {
                                     <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ item.price }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.item_total }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.total_sum }}</td>
                                     <!-- Display other item properties as needed -->
                                 </tr>
+
                                 </tbody>
                                 <button @click="placeOrder" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
                                     Place Order
                                 </button>
                             </table>
+
                         </div>
                     </div>
                 </div>
             </div>
-
 
 
     </AuthenticatedLayout>

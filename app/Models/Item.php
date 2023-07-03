@@ -18,7 +18,9 @@ class Item extends Model
         'image'
     ];
 
-
+    function user(){
+        return $this->belongsTo(User::class, 'userId');
+    }
 
     /**
      * Create a new factory instance for the model.

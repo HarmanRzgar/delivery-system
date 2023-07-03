@@ -22,9 +22,13 @@
         "chart.js": "^4.3.0",
         "fusioncharts": "^3.20.0",
         "hooper": "^0.3.4",
+        "jspdf": "^2.5.1",
+        "jspdf-autotable": "^3.5.29",
         "pexels": "^1.4.0",
+        "pinia": "^2.1.4",
         "swiper": "^9.4.1",
         "vue-chartjs": "^5.2.0",
-        "vue-fusioncharts": "^3.2.0"
+        "vue-fusioncharts": "^3.2.0",
+        "vue3-easy-data-table": "^1.5.45"
     }
 }

@@ -20,5 +20,16 @@ class Orders extends Model
         return $this->belongsTo(Phase::class, 'phase');
     }
 
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasManyThrough(Orders::class, Item::class);
+    }
+
+
     use HasFactory;
 }

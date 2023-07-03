@@ -13,7 +13,12 @@ const showingNavigationDropdown = ref(false);
 
 </script>
 <script>
+import DataTable from "vue3-easy-data-table";
+import Footer from "@/Components/Footer.vue";
+
 export default {
+    components: {Footer},
+
     data() {
         return {
             user: [],
@@ -40,9 +45,11 @@ export default {
 
 <template>
     <div class="flex flex-column">
-        <div class="min-h-screen bg-gray-100 flex w-full ">
-            <nav class="border-r-2 border-gray-300 fixed h-screen h-full bg-white border-b border-gray-100 transition transform" :class="{ 'w-90': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }">
-                <!-- Primary Navigation Menu -->
+        <div class="min-h-screen bg-gray-100 flex w-full">
+            <nav
+                class="top-0 fixed h-screen bg-white border-b border-gray-100 transition transform z-50"
+                :class="{ 'w-90': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }"
+            >  <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 X ">
                     <div class="flex justify-between h-16 flex flex-row">
                         <div class="flex flex-column align-center">
@@ -136,11 +143,18 @@ export default {
             </nav>
 
             <!-- Page Heading -->
-            <div class="block right flex-1" >
-            <header class="bg-white border-b-2 border-gray-300 flex flex-column-reverse w-full flex-1" v-if="$slots.header">
+            <div class="block right flex-1 ">
+                <header
+                    class="bg-white border-b border-gray-300 flex w-full fixed z-20"
+                    v-if="$slots.header"
+                >
                 <div class="ml-6 mb-3 flex items-center block justify-center">
                     <button
                         @click="showingNavigationDropdown = !showingNavigationDropdown"
+                        :class="{
+                                            hidden: showingNavigationDropdown,
+
+                                        }"
                         class="inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                     >
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -181,13 +195,14 @@ export default {
             </header>
 
             <!-- Page Content -->
-            <main class="h-full flex-1 justify-end items" >
+                <main class="h-full items flex justify-center  z-0 mt-12 ">
 
                 <div >
                 <slot />
 
                 </div>
             </main>
+                <Footer class="" />
          </div>
         </div>
     </div>

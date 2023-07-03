@@ -74,7 +74,7 @@ export default {
                     <div class="p-6 text-gray-900">See the shops fam!</div>
                     <carousel :users="shops"/>
                 </div>
-                <card :items="items" @click="onCreateOrder"/>
+<!--                <card :items="items" @click="onCreateOrder"/>-->
             </div>
         </div>
     </AuthenticatedLayout>

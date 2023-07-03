@@ -8,6 +8,7 @@ use App\Models\OrderList;
 use App\Models\orders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class OrdersController extends Controller
 {
@@ -46,19 +47,22 @@ class OrdersController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validate([
-
+            // Add your validation rules here
         ]);
 
         // Retrieve cart items for the user
         $cartItems = Cart::where('user_id', Auth::id())->get();
-        if ($cartItems) {
+        if ($cartItems->isNotEmpty()) {
+            // Calculate the total sum
+            $totalSum = 0;
+
             // Create the order
             $order = Orders::create([
                 'customer_id' => Auth::id(),
-                'total_sum' => 10.3, // This will be updated in the loop
+                'total_sum' => $totalSum, // Assign the initial total sum
                 'phase' => 1, // Set the initial status of the order
-            ]);
 
+            ]);
 
             // Move cart items to order
             foreach ($cartItems as $cartItem) {
@@ -69,21 +73,25 @@ class OrdersController extends Controller
                     'price' => $cartItem->price,
                     'name' => $cartItem->name,
                 ]);
-                $orderItem->load('item');
+                $orderItem->load('item.user');
                 $orderItem->save();
 
 
-                // Update the order total by multiplying item price with quantity
-                $order->update([
-                    'total_sum' => ($cartItem->item->price * $cartItem->quantity),
-                ]);
+                if ($order->shop_owner_id === null){
 
+                    $shopOwnerId = $cartItem->shop_owner_id;
+
+                }
+                // Accumulate the total sum
+                $totalSum += $cartItem->item->price * $cartItem->quantity;
             }
 
-            $order->load('phase');
-
-
-            // Save the updated order total
+            // Update the order with the calculated total sum
+            $order->total_sum = $totalSum;
+            $order->load('items.userID');
+            if ($order->shop_owner_id === null){
+            $order->shop_owner_id = $shopOwnerId;
+            }
             $order->save();
 
             // Remove cart items
@@ -92,7 +100,7 @@ class OrdersController extends Controller
             // Return a response or perform additional actions
             // ...
 
-            return response()->json(['order' => $order], 200);
+            return response()->json(['order' => $order, 'order_item' => $orderItem], 200);
         } else {
             return response()->json(['order' => 'Cart is empty'], 404);
         }
@@ -103,10 +111,16 @@ class OrdersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(orders $orders)
+    public function show(Orders $order)
     {
-        //
+        $orderItems = OrderList::where('order_id', $order->id)->with('item.userID')->get();
+
+        return Inertia::render('OrderDetails', [
+            'order' => $order,
+            'orderItems' => $orderItems,
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

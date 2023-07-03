@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 z-0">
             <div v-for="item in items" :key="item.id" class="flex">
                 <div class="m-4 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col">
                     <a href="#">
@@ -13,7 +13,7 @@
                         <div class="description text-sm text-gray-400 break-words overflow-hidden line-clamp-3">{{ item.description }}</div>
                         <div class="flex items-center justify-between">
                             <span class="text-3xl font-bold text-gray-900 dark:text-white">{{ item.price }}</span>
-                            <a @click="openModal(item)" href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+                            <a @click="openModal(item)" href="#" class="m-2 text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-blue-800">Add to cart</a>
                         </div>
                     </div>
                 </div>
@@ -39,6 +39,7 @@
 
 <script>
 import axios from "axios";
+// import {useCartsStore} from "@/store/cartsStore.js";
 
 export default {
     props: {
@@ -74,6 +75,9 @@ export default {
                 quantity: parseInt(this.quantity),
 
             };
+
+            // const cartsStore = useCartsStore();
+            // cartsStore.addToCart(order);
 
             // Make the API request to store the order
             axios.post('/ordered', order)
