@@ -19,7 +19,7 @@ class Item extends Model
     ];
 
     function user(){
-        return $this->belongsTo(User::class, 'userId');
+        return $this->belongsTo(Item::class, 'userId');
     }
 
     /**

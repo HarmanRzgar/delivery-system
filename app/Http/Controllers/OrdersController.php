@@ -32,6 +32,24 @@ class OrdersController extends Controller
     }
 
 
+
+    public function show()
+    {
+        $orders = Orders::where('shop_Owner_Id', Auth::id())->get();
+        $orderLists = [];
+
+        foreach ($orders as $order) {
+            $orderList = OrderList::where('order_id', $order->id)->get();
+            $orderLists[$order->id] = $orderList;
+        }
+
+        return response()->json([
+            'orders' => $orders,
+            'orderLists' => $orderLists
+        ]);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -56,6 +74,9 @@ class OrdersController extends Controller
             // Calculate the total sum
             $totalSum = 0;
 
+            $shopOwnerId = $cartItems->first()->shop_owner_id;
+
+
             // Create the order
             $order = Orders::create([
                 'customer_id' => Auth::id(),
@@ -63,6 +84,7 @@ class OrdersController extends Controller
                 'phase' => 1, // Set the initial status of the order
 
             ]);
+
 
             // Move cart items to order
             foreach ($cartItems as $cartItem) {
@@ -76,21 +98,15 @@ class OrdersController extends Controller
                 $orderItem->load('item.user');
                 $orderItem->save();
 
-
-                if ($order->shop_owner_id === null){
-
-                    $shopOwnerId = $cartItem->shop_owner_id;
-
-                }
                 // Accumulate the total sum
                 $totalSum += $cartItem->item->price * $cartItem->quantity;
             }
 
+
             // Update the order with the calculated total sum
             $order->total_sum = $totalSum;
-            $order->load('items.userID');
-            if ($order->shop_owner_id === null){
-            $order->shop_owner_id = $shopOwnerId;
+            if ($order->shop_owner === null){
+            $order->shop_Owner_Id = $shopOwnerId;
             }
             $order->save();
 
@@ -111,15 +127,7 @@ class OrdersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Orders $order)
-    {
-        $orderItems = OrderList::where('order_id', $order->id)->with('item.userID')->get();
 
-        return Inertia::render('OrderDetails', [
-            'order' => $order,
-            'orderItems' => $orderItems,
-        ]);
-    }
 
 
     /**

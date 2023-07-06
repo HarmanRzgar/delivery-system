@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/ordered', [CartController::class, 'addToCart']);
     Route::get('/cartItems', [CartController::class, 'index']);
     Route::get('/orders', [OrdersController::class, 'index']);
-    Route::get('/orders-seller', [OrdersController::class, 'show']);
+    Route::get('/ordersseller', [OrdersController::class, 'show']);
     Route::post('/place-order', [OrdersController::class, 'store'])->name('place-order');
 
 

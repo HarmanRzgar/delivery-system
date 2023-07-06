@@ -12,6 +12,7 @@ class Orders extends Model
       'total_sum',
         'phase',
       'customer_id',
+        'shop_Owner_Id',
     ];
 
 
@@ -28,6 +29,10 @@ class Orders extends Model
     public function orders()
     {
         return $this->hasManyThrough(Orders::class, Item::class);
+    }
+
+    public function shop_owner() {
+        return $this->belongsTo(User::class, "shop_Owner_Id");
     }
 
 

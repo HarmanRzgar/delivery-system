@@ -1,63 +1,100 @@
+<!--<script>-->
+<!--import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';-->
+<!--import { Head } from '@inertiajs/vue3';-->
+<!--import List from '@/Components/List.vue';-->
+<!--import TextBox from '@/Components/TextBox.vue'-->
+<!--import BarChart from '@/Components/BarChart.vue'-->
+<!--import DataTable from "vue3-easy-data-table";-->
+<!--import axios from 'axios';-->
+
+
+
+<!--import { Bar } from 'vue-chartjs'-->
+<!--import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'-->
+<!--export default {-->
+<!--    components: { TextBox, AuthenticatedLayout, BarChart, DataTable, Head},-->
+<!--    data() {-->
+<!--        return {-->
+<!--    //         ListItems: [-->
+<!--    //     {id: 1 ,title: 'Revenue', price: '22$'},-->
+<!--    //     {id: 1 ,title: 'Sales by #', price: '23'},-->
+<!--    //     {id: 1 ,title: 'Increase from yesterday', price: '2.5%'}-->
+<!--    // ],-->
+
+<!--            orders: [],-->
+<!--            orderLists: {},-->
+<!--}},-->
+<!--    mounted() {-->
+<!--        // this.fetchCartItems();-->
+<!--        this.fetchOrders();-->
+<!--    },-->
+<!--    // computed: {-->
+<!--    //-->
+<!--    //     myStyles () {-->
+<!--    //         return {-->
+<!--    //             height: `1111100px`,-->
+<!--    //             position: 'relative'-->
+<!--    //         }-->
+<!--    //     }-->
+<!--    // },-->
+<!--    methods: {-->
+<!--        // fetchCartItems() {-->
+<!--        //     // Make an API request to retrieve the cart items-->
+<!--        //     axios.get('/cartItems')-->
+<!--        //         .then(response => {-->
+<!--        //             this.cartItems = response.data;-->
+<!--        //         })-->
+<!--        //         .catch(error => {-->
+<!--        //             console.error(error.response.data);-->
+<!--        //         });-->
+<!--        // },-->
+<!--        fetchOrders() {-->
+<!--            axios.get('/ordersseller')-->
+<!--                .then(response => {-->
+<!--                    this.orders = response.data.orders;-->
+<!--                    this.orderLists = response.data.orderLists;-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error(error.response.data);-->
+<!--                });-->
+<!--    },-->
+<!--},}-->
+
+<!--</script>-->
 <script>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import List from '@/Components/List.vue';
-import TextBox from '@/Components/TextBox.vue'
-import BarChart from '@/Components/BarChart.vue'
-import DataTable from "vue3-easy-data-table";
+import axios from 'axios';
+import {Head} from "@inertiajs/vue3";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable'
 
-
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 export default {
-    components: { TextBox, AuthenticatedLayout, BarChart, DataTable},
+    components: {
+        AuthenticatedLayout, Head,
+    },
     data() {
         return {
-            ListItems: [
-        {id: 1 ,title: 'Revenue', price: '22$'},
-        {id: 1 ,title: 'Sales by #', price: '23'},
-        {id: 1 ,title: 'Increase from yesterday', price: '2.5%'}
-    ],
-            cartItems: [],
             orders: [],
-}},
+            orderLists: {},
+        };
+    },
     mounted() {
-        this.fetchCartItems();
         this.fetchOrders();
     },
-    computed: {
-
-        myStyles () {
-            return {
-                height: `1111100px`,
-                position: 'relative'
-            }
-        }
-    },
     methods: {
-        fetchCartItems() {
-            // Make an API request to retrieve the cart items
-            axios.get('/cartItems')
-                .then(response => {
-                    this.cartItems = response.data;
-                })
-                .catch(error => {
-                    console.error(error.response.data);
-                });
-        },
+
+
         fetchOrders() {
-            axios.get('/orders-seller')
-                .then(response => {
-                    this.orders = response.data.orders;
-                })
-                .catch(error => {
-                    console.error(error.response.data);
-                });
+            axios.get('/ordersseller').then(response => {
+                this.orders = response.data.orders;
+                this.orderLists = response.data.orderLists;
+            }).catch(error => {
+                console.log(error);
+            });
+        },
     },
-},}
-
+};
 </script>
-
 <template>
     <Head title="Dashboard" />
 
