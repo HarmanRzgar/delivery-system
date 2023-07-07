@@ -17,7 +17,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Orders::where('customer_id', Auth::id())->get();
+        $orders = Orders::where('customer_id', Auth::id())->orderBy('phase', 'asc')->get();
         $orderLists = [];
 
         foreach ($orders as $order) {
@@ -35,20 +35,67 @@ class OrdersController extends Controller
 
     public function show()
     {
-        $orders = Orders::where('shop_Owner_Id', Auth::id())->get();
-        $orderLists = [];
+        if (Auth::guard('web')->user()->role_id === 4) {
 
-        foreach ($orders as $order) {
-            $orderList = OrderList::where('order_id', $order->id)->get();
-            $orderLists[$order->id] = $orderList;
+            $orders = Orders::where('shop_Owner_Id', Auth::id())->orderBy('phase', 'asc')->get();
+            $orderLists = [];
+
+            foreach ($orders as $order) {
+                $orderList = OrderList::where('order_id', $order->id)->get();
+                $orderLists[$order->id] = $orderList;
+            }
+
+            return response()->json([
+                'orders' => $orders,
+                'orderLists' => $orderLists
+            ]);
+        } else if  (Auth::guard('web')->user()->role_id === 3){
+            $orders = Orders::where('driver_id', Auth::id())->get();
+            $undeliveredOrders = Orders::where('phase', 2)->get();
+            $orderLists = [];
+
+            foreach ($orders as $order) {
+                $orderList = OrderList::where('order_id', $order->id)->get();
+                $orderLists[$order->id] = $orderList;
+            }
+
+            return response()->json([
+                'orders' => $orders,
+                'orderLists' => $orderLists,
+                'undeliveredOrders' => $undeliveredOrders,
+            ]);
         }
-
-        return response()->json([
-            'orders' => $orders,
-            'orderLists' => $orderLists
-        ]);
     }
 
+    public function updatePhase($OrderId, Request $request )
+    {
+
+        $phase = $request->input('phase');
+
+        $order = Orders::findOrFail($OrderId);
+
+        if ($phase === 'accept') {
+            // Increase the value of the "phase" column by one
+            $order->phase += 1;
+        } elseif ($phase === 'reject') {
+            // Set the value of the "phase" column to five
+            $order->phase = 6;
+        } elseif ($phase === 'deliver') {
+            // Set the value of the "phase" column to five
+            $order->phase = 3;
+            $order->driver_id = Auth::id();
+        } elseif ($phase === 'done') {
+            // Set the value of the "phase" column to five
+            $order->phase = 4;
+        } elseif ($phase === 'cancel') {
+            // Set the value of the "phase" column to five
+            $order->phase = 5;
+        }
+
+        $order->save();
+
+        return response()->json(['message' => 'Phase updated successfully']);
+    }
 
     /**
      * Show the form for creating a new resource.

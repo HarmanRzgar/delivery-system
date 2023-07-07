@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrdersController::class, 'index']);
     Route::get('/ordersseller', [OrdersController::class, 'show']);
     Route::post('/place-order', [OrdersController::class, 'store'])->name('place-order');
-
+    Route::put('/orders/{OrderId}', [OrdersController::class, 'updatePhase']);
 
 });
 

@@ -76,20 +76,70 @@ export default {
         return {
             orders: [],
             orderLists: {},
+            user: [],
+            undeliveredOrders: [],
         };
     },
     mounted() {
         this.fetchOrders();
+        this.UserData();
     },
     methods: {
-
+        UserData() {
+            axios.get('/user')
+                .then(response => {
+                    this.user = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        acceptItem(itemId) {
+            axios.put('/orders/' + itemId, { phase: 'accept' })
+                .then(response => {
+                   console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error.data);
+                });
+        },
+        rejectItem(itemId) {
+            axios.put('/orders/' + itemId, { phase: 'reject' })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                });
+        },
+        deliverItem(itemId) {
+            axios.put('/orders/' + itemId, { phase: 'deliver' })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                });
+        },
+        doneItem(itemId) {
+            axios.put('/orders/' + itemId, { phase: 'done' })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                });
+        },
 
         fetchOrders() {
             axios.get('/ordersseller').then(response => {
+                console.log(response.data);
                 this.orders = response.data.orders;
                 this.orderLists = response.data.orderLists;
-            }).catch(error => {
+                this.undeliveredOrders = response.data.undeliveredOrders;
                 console.log(error);
+            }).catch(error => {
+                console.log(error.data);
             });
         },
     },
@@ -107,8 +157,8 @@ export default {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex">
                     <div class="p-6">
-                        <h2 class="text-xl font-semibold mb-4">Order Items</h2>
-                        <div v-for="(order, index) in orders" :key="index" class="mb-4 border-2 border-gray-800 p-6 rounded-md">
+                        <h2 class="text-xl font-semibold mb-4">Orders</h2>
+                        <div v-for="(order, index) in orders" :key="index" class="mb-4 border-2 border-gray-800 p-6 rounded-md" v-if="user.role_id === 4">
                             <h3 class="font-semibold mb-2">Order ID: {{ order.id }}</h3>
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-100">
@@ -130,11 +180,124 @@ export default {
                             </table>
                             <div class="flex flex-row m-1 border-y-2 border-gray-600 p-2 items-center justify-between ">
                                 <h3>Total: {{order.total_sum}}</h3>
+
+                                <button @click="downloadOrderAsPDF(order)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                    Print invoice
+                                </button>
+                            </div><div class="justify-between flex p-4" v-if="order.phase === 1" >
+                            <button @click="acceptItem(order.id)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                Accept
+                            </button>
+                            <button @click="rejectItem(order.id)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                Reject
+                            </button>
+                        </div>
+                            <div  class="justify-between flex p-4" v-if="order.phase === 2">
+                                Preparing....
+                            </div>
+                            <div  class="justify-between flex p-4" v-if="order.phase === 3">
+                                Delivering...
+                            </div>
+                            <div  class="justify-between flex p-4" v-if="order.phase === 4">
+                                Delivered.
+                            </div>
+                            <div  class="justify-between flex p-4" v-if="order.phase === 5">
+                                Cancelled
+                            </div>
+                            <div  class="justify-between flex p-4" v-if="order.phase === 6">
+                                Rejected
+                            </div>
+                        </div>
+                        <div v-for="(order, index) in orders" :key="index" class="mb-4 border-2 border-gray-800 p-6 rounded-md" v-if="user.role_id === 3">
+                            <h3 class="font-semibold mb-2">Order ID: {{ order.id }}</h3>
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                    <!-- Add more table headers as needed -->
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tr v-for="(item, i) in orderLists[order.id]" :key="i">
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.price }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
+                                    <!-- Display other item properties as needed -->
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="flex flex-row m-1 border-y-2 border-gray-600 p-2 items-center justify-between ">
+                                <h3>Total: {{order.total_sum}}</h3>
+
                                 <button @click="downloadOrderAsPDF(order)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
                                     Print invoice
                                 </button>
                             </div>
+                            <div class="justify-between flex p-4" v-if="order.phase === 3" >
+                                <button @click="doneItem(order.id)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                    Done
+                                </button>
 
+                            </div>
+                            <div class="justify-between flex p-4" v-if="order.phase === 4" >
+                              Done.
+                            </div>
+<!--                            <div  class="justify-between flex p-4" v-else>-->
+<!--                                Preparing....-->
+<!--                            </div>-->
+                        </div>
+                        <div v-for="(order, index) in undeliveredOrders" :key="index" class="mb-4 border-2 border-gray-800 p-6 rounded-md" v-if="user.role_id === 3">
+                            <h3 class="font-semibold mb-2">Order ID: {{ order.id }}</h3>
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                    <!-- Add more table headers as needed -->
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tr v-for="(item, i) in orderLists[order.id]" :key="i">
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.price }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
+                                    <!-- Display other item properties as needed -->
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="flex flex-row m-1 border-y-2 border-gray-600 p-2 items-center justify-between ">
+                                <h3>Total: {{order.total_sum}}</h3>
+
+                                <button @click="downloadOrderAsPDF(order)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                    Print invoice
+                                </button>
+                            </div><div class="justify-between flex p-4" v-if="order.phase === 2" >
+                            <button @click="deliverItem(order.id)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                Accept
+                            </button>
+
+                        </div>
+<!--                            <div class="justify-between flex p-4" v-if="order.phase === 3" >-->
+<!--                                <button @click="DoneItem(order.id)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">-->
+<!--                                    Done-->
+<!--                                </button>-->
+
+<!--                            </div>-->
+<!--                            <div class="justify-between flex p-4" v-if="order.phase === 4" >-->
+<!--                                <button @click="DoneItem(order.id)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">-->
+<!--                                    Done-->
+<!--                                </button>-->
+
+<!--                            </div>-->
+<!--                            <div  class="justify-between flex p-4" v-else>-->
+<!--                                Preparing....-->
+<!--                            </div>-->
+<!--                            <div  class="justify-between flex p-4" v-else>-->
+<!--                                Preparing....-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>

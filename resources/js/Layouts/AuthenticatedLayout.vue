@@ -109,7 +109,7 @@ export default {
                         <ResponsiveNavLink :href="route('home')" :active="route().current('home')">
                             Home
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')" v-if="user.role_id === 4 ">
+                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')" v-if="user.role_id === 4 || 3">
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('shops')" :active="route().current('shops')">

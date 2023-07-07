@@ -37,6 +37,28 @@
                                         Print invoice
                                     </button>
                                 </div>
+                                <div class="justify-between flex p-4 items-center" v-if="order.phase === 1" >
+                                    Pending ...
+                                    <button @click="cancelItem(order.id)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                        Cancel
+                                    </button>
+                                </div>
+                                <div  class="justify-between flex p-4" v-if="order.phase === 2" >
+                                Preparing....
+                                </div>
+                                <div class="justify-between flex p-4" v-if="order.phase === 3" >
+                                    On the way!
+                                </div>
+                                <div class="justify-between flex p-4" v-if="order.phase === 4" >
+                                  Delivered!
+                                </div>
+                                <div class="justify-between flex p-4" v-if="order.phase === 5" >
+                                    Cancelled.
+                                </div>
+                                <div class="justify-between flex p-4" v-if="order.phase === 6" >
+                                    Rejected.
+                                </div>
+
 
                             </div>
                         </div>
@@ -68,6 +90,15 @@ export default {
         this.fetchOrders();
     },
     methods: {
+        cancelItem(itemId) {
+            axios.put('/orders/' + itemId, { phase: 'cancel' })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                });
+        },
         downloadOrderAsPDF(order) {
             const doc = new jsPDF();
 
