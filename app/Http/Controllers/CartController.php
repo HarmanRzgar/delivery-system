@@ -98,8 +98,11 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cart $cart)
+    public function destroy()
     {
-        // Delete a specific cart item
+
+        Cart::where('user_id', Auth::id())->delete();
+
+        return response()->json(['message' => 'Cart emptied']);
     }
 }

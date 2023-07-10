@@ -8,7 +8,7 @@
             >
                 <!-- Your existing card component code goes here -->
                 <!-- Replace 'user' with 'shop' in the code for consistency -->
-                <div class=" break-words m-4 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-2 shadow-black dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-center break-words">
+                <div class="break-words m-4 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-center break-words">
 
                         <a href="#" class="">
                             <img class="p-6 rounded-lg rounded-md" :src="user.image" alt="product image" />

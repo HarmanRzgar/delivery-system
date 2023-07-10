@@ -1,10 +1,10 @@
 
 <template>
-    <div class="container mx-auto m-4" v-if="user.id === users.id ">
+    <div class="container mx-auto m-4 z-10" v-if="user.id === users.id ">
         <div class="flex justify-center">
             <button
-                @click="isOpen = true"
-                class="px-6 py-2 text-white bg-indigo-600 focus:bg-indigo-800 rounded shadow transition"
+                @click="isOpen = true; isModalOpen = true"
+                class="px-6 py-2 text-white bg-indigo-600 focus:bg-indigo-800 rounded shadow transition shadow-md shadow-gray-500"
                 type="button"
             >
                 New Item
@@ -21,7 +21,7 @@
           bg-gray-700 bg-opacity-50
         "
             >
-                <div class="max-w-2xl p-6 bg-gray-100 rounded-md shadow-xl">
+                <div class="max-w-2xl p-6 bg-gray-100 rounded-md shadow-xl z-50 overflow-hidden">
                     <div class="flex items-center justify-between">
                         <h3 class="text-2xl">Add new Item!</h3>
                         <svg
@@ -77,12 +77,22 @@ export default {
     data() {
         return {
             isOpen: false,
+            isModalOpen: false,
             url:null,
             user: [],
         };
     },
     mounted() {
         this.UserData();
+    },
+    watch: {
+        isModalOpen(newVal) {
+            if (newVal) {
+                document.body.classList.add('modal-open');
+            } else {
+                document.body.classList.remove('modal-open');
+            }
+        },
     },
     methods: {
 

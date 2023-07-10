@@ -1,8 +1,8 @@
 <template>
-    <div class="shadow-2xl">
+    <div class="">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 z-0">
-            <div v-for="item in items" :key="item.id" class="flex">
-                <div class="m-4 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col">
+            <div v-for="item in items" :key="item.id" class="flex ">
+                <div class="m-4 w-full max-w-sm border border-indigo-400 rounded-lg drop-shadow-lg shadow-md shadow-gray-500 border-2 border-indigo-400 flex flex-col bg-gray-900">
                     <a href="#">
                         <img class="p-6 rounded-lg rounded-md" :src="item.image" alt="product image" />
                     </a>

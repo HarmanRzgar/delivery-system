@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/ordersseller', [OrdersController::class, 'show']);
     Route::post('/place-order', [OrdersController::class, 'store'])->name('place-order');
     Route::put('/orders/{OrderId}', [OrdersController::class, 'updatePhase']);
+    Route::delete('/cart-del/', [CartController::class, 'destroy'])->name('cart.delete');
 
 });
 

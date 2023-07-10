@@ -98,6 +98,7 @@ export default {
             axios.put('/orders/' + itemId, { phase: 'accept' })
                 .then(response => {
                    console.log(response.data);
+                    this.fetchOrders();
                 })
                 .catch(error => {
                     console.log(error.data);
@@ -107,6 +108,7 @@ export default {
             axios.put('/orders/' + itemId, { phase: 'reject' })
                 .then(response => {
                     console.log(response.data);
+                    this.fetchOrders();
                 })
                 .catch(error => {
                     console.log(error.response.data);
@@ -116,6 +118,7 @@ export default {
             axios.put('/orders/' + itemId, { phase: 'deliver' })
                 .then(response => {
                     console.log(response.data);
+                    this.fetchOrders();
                 })
                 .catch(error => {
                     console.log(error.response.data);
@@ -125,6 +128,7 @@ export default {
             axios.put('/orders/' + itemId, { phase: 'done' })
                 .then(response => {
                     console.log(response.data);
+                    this.fetchOrders();
                 })
                 .catch(error => {
                     console.log(error.response.data);
@@ -154,7 +158,7 @@ export default {
         </template>
 
         <div class="py-12 flex">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-1 lg:px-1">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex">
                     <div class="p-6">
                         <h2 class="text-xl font-semibold mb-4">Orders</h2>
@@ -181,7 +185,7 @@ export default {
                             <div class="flex flex-row m-1 border-y-2 border-gray-600 p-2 items-center justify-between ">
                                 <h3>Total: {{order.total_sum}}</h3>
 
-                                <button @click="downloadOrderAsPDF(order)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                <button @click="downloadOrderAsPDF(order)" class="shadow-md shadow-gray-500 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
                                     Print invoice
                                 </button>
                             </div><div class="justify-between flex p-4" v-if="order.phase === 1" >
@@ -231,7 +235,7 @@ export default {
                             <div class="flex flex-row m-1 border-y-2 border-gray-600 p-2 items-center justify-between ">
                                 <h3>Total: {{order.total_sum}}</h3>
 
-                                <button @click="downloadOrderAsPDF(order)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                <button @click="downloadOrderAsPDF(order)" class="shadow-md shadow-gray-500 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
                                     Print invoice
                                 </button>
                             </div>
@@ -271,7 +275,7 @@ export default {
                             <div class="flex flex-row m-1 border-y-2 border-gray-600 p-2 items-center justify-between ">
                                 <h3>Total: {{order.total_sum}}</h3>
 
-                                <button @click="downloadOrderAsPDF(order)" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
+                                <button @click="downloadOrderAsPDF(order)" class="shadow-md shadow-gray-500 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ">
                                     Print invoice
                                 </button>
                             </div><div class="justify-between flex p-4" v-if="order.phase === 2" >

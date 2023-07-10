@@ -76,7 +76,7 @@ export default {
 <!--                        <div v-if="user.role_id === users ">-->
                     <ItemModal :users="user"></ItemModal>
 <!--                        </div>-->
-                    <card :items="items"/> </div>
+                    <card :items="items" /> </div>
 
             </div>
 
